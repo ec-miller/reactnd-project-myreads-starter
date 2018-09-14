@@ -1,13 +1,21 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { search } from './BooksAPI.js'
 
 class Search extends React.Component {
   state = {
-    searchTerm: ''
+    searchTerm: '',
+    searchResults: {}
   }
 
   updateSearch = (search) => {
     this.setState({ searchTerm: search})
+  }
+
+  getSearch = () => {
+    search(this.state.searchTerm).then((searchResults) => {
+      this.setState({ searchResults })
+    })
   }
 
   render() {
@@ -25,7 +33,11 @@ class Search extends React.Component {
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
             <input type="text" placeholder="Search by title or author" 
-              onChange={ (event) => this.updateSearch(event.target.value) }
+              onChange={ (event) => {
+                this.updateSearch(event.target.value) 
+                this.getSearch()
+                }
+              }
             />
 
           </div>
