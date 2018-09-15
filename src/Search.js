@@ -16,6 +16,7 @@ class Search extends React.Component {
   getSearch = () => {
     search(this.state.searchTerm).then((searchResults) => {
       this.setState({ searchResults })
+      console.log({searchResults})
     })
   }
 
