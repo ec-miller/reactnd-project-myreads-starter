@@ -11,18 +11,26 @@ import { Link } from 'react-router-dom'
 
 class BooksApp extends React.Component {
   state = {
-    categorizedBooks: []
+    apiBooks: []
   }
 
   componentDidMount() {
-    getAll().then((categorizedBooks) => {
-      console.log(categorizedBooks)
-      this.setState({ categorizedBooks })
+    getAll().then((apiBooks) => {
+      this.setState({ apiBooks })
     })
   }
 
   render() {
-    const categorizedBooks = this.setState.categorizedBooks
+    const apiBooks = this.state.apiBooks
+    console.log(apiBooks)
+    const shelves = ['currentlyReading','wantToRead','read']
+
+    let categorizedBooks
+    if (apiBooks) {
+      categorizedBooks = apiBooks
+    } else {
+      categorizedBooks = []
+    }
 
     return (
       <div className="app">
@@ -34,9 +42,17 @@ class BooksApp extends React.Component {
             <div className="list-books-title">
               <h1>MyReads</h1>
             </div>
-            <BooksView 
-            categorizedBooks={categorizedBooks}
-            />
+            {shelves.map( (shelf) => {
+                const group = categorizedBooks.filter( (book) => book.shelf === shelf)
+                console.log(group)
+                return <BooksView
+                  group = { group }
+                  shelf = { shelf }
+                  key = { shelf }
+                />
+              }
+              
+            )}
             <div className="open-search">
               <Link to='search'>Add a book</Link>
             </div>
