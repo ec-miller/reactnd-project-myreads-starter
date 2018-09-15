@@ -6,7 +6,7 @@ import Book from './Book.js'
 class Search extends React.Component {
   state = {
     searchTerm: '',
-    searchResults: {}
+    searchResults: []
   }
 
   updateSearch = (search) => {
@@ -20,6 +20,9 @@ class Search extends React.Component {
   }
 
   render() {
+    const searchResults = this.state.searchResults
+    const searchTerm = this.state.searchTerm
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -45,7 +48,17 @@ class Search extends React.Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-              <Book />
+            { searchTerm.length > 0 && searchResults && !('error' in searchResults) && (
+              searchResults.map((item) => {
+                return <Book 
+                  key={item.id}
+                  item={item}
+                />
+              })
+              // <Book />
+              
+              ) }
+            
           </ol>
         </div>
       </div>
