@@ -22,7 +22,6 @@ class BooksApp extends React.Component {
 
   render() {
     const apiBooks = this.state.apiBooks
-    console.log(apiBooks)
     const shelves = ['currentlyReading','wantToRead','read']
 
     let categorizedBooks
@@ -46,7 +45,6 @@ class BooksApp extends React.Component {
               <div>
                 {shelves.map((shelf) => {
                   const group = categorizedBooks.filter((book) => book.shelf === shelf)
-                  console.log(group)
                   return <BooksView
                     group={group}
                     shelf={shelf}
