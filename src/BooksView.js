@@ -3,10 +3,10 @@ import Book from './Book.js'
 
 class BooksView extends React.Component {
   render() {
-    let { shelf, group } = this.props
+    let { shelf, group, onChangeShelf } = this.props
 
     shelf = shelf[0].toUpperCase() + shelf.substr(1).replace(/([A-Z])/g, ' $1')
-    
+
     return (
       <div className="bookshelf">
         <h2 className="bookshelf-title">{shelf}</h2>
@@ -16,6 +16,7 @@ class BooksView extends React.Component {
               return <Book
                 key={item.id}
                 item={item}
+                onChangeShelf={onChangeShelf}
               />
               })
             }

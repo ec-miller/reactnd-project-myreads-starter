@@ -2,7 +2,7 @@ import React from 'react'
 
 class Book extends React.Component {
   render() {
-    const { item } = this.props
+    const { item, onChangeShelf } = this.props
 
 
     const shelfChoice = (('shelf' in item) ? item.shelf : 'none')
@@ -14,7 +14,7 @@ class Book extends React.Component {
           <div className="book-top">
             <div className="book-cover" style={{ width: 128, height: 188, backgroundImage: `url(${item.imageLinks.thumbnail})` }}></div>
               <div className="book-shelf-changer">
-                <select value={shelfChoice}>
+                <select value={shelfChoice} onChange={(event) => onChangeShelf(item,event.value)}>
                   <option value="move" disabled>Move to...</option>
                   <option value="currentlyReading">Currently Reading</option>
                   <option value="wantToRead">Want to Read</option>
@@ -24,7 +24,10 @@ class Book extends React.Component {
               </div>
             </div>
             <div className="book-title">{item.title}</div>
-            <div className="book-authors">{item.author}</div>
+            {item.authors.map((author) => {
+              return <div className="book-authors" key={author}>{author}</div>
+            })}
+              
         </div>
       </li>
     )

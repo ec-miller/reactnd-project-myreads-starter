@@ -2,7 +2,7 @@ import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
 import { Route } from 'react-router-dom'
-import { getAll } from './BooksAPI.js'
+import { getAll, update } from './BooksAPI.js'
 import Search from './Search.js'
 import BooksView from './BooksView.js'
 
@@ -18,6 +18,11 @@ class BooksApp extends React.Component {
     getAll().then((apiBooks) => {
       this.setState({ apiBooks })
     })
+  }
+
+  changeShelf = (book, shelf) => {
+    update(book, shelf)
+    this.componentDidMount()
   }
 
   render() {
@@ -49,6 +54,7 @@ class BooksApp extends React.Component {
                     group={group}
                     shelf={shelf}
                     key={shelf}
+                    onChangeShelf={this.changeShelf}
                     />
                   }
                 )}
