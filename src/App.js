@@ -15,9 +15,17 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-    getAll().then((apiBooks) => {
-      this.setState({ apiBooks })
-    })
+    let cachedState = localStorage.getItem('getAllBooks')
+    if (!cachedState) {
+      getAll().then((apiBooks) => {
+        localStorage.setItem('getAllBooks', JSON.stringify(apiBooks))
+        this.setState({ apiBooks })
+      })
+    } else {
+      console.log('there is a cache')
+      this.setState({ apiBooks: JSON.parse(cachedState) })
+    }
+    
   }
 
   changeShelf = (book, shelf) => {
@@ -33,7 +41,7 @@ class BooksApp extends React.Component {
     this.setState((state) => {
       return {apiBooks: [...state.apiBooks, book]}
     })
-    
+    localStorage.setItem('getAllBooks', JSON.stringify(this.state.apiBooks))
   }
 
 
