@@ -16,13 +16,43 @@ class Search extends React.Component {
   getSearch = () => {
     search(this.state.searchTerm).then((searchResults) => {
       this.setState({ searchResults })
-      console.log({searchResults})
+      // console.log({searchResults})
     })
+  }
+
+  compareSearchAndShelves = (searchResults,catBooks) => {
+    let finalResults = []
+    let idArray = []
+    searchResults.forEach((searchBook) => {
+      catBooks.forEach((catBook) => {
+        if (searchBook.id === catBook.id) { 
+          finalResults.push(catBook)
+        } 
+      })
+    finalResults.forEach((finBook) => {
+      idArray.push(finBook.id) 
+    })
+    if (idArray.indexOf(searchBook.id) === -1) {
+      finalResults.push(searchBook)
+    }
+    } )
+    // console.log(finalResults)
+
+    return finalResults
   }
 
   render() {
     const searchResults = this.state.searchResults
     const searchTerm = this.state.searchTerm
+    const categorizedBooks=this.props.categorizedBooks
+    let finalSearch = []
+
+    if (searchTerm.length > 0 && searchResults && !('error' in searchResults)) {
+      finalSearch = this.compareSearchAndShelves(searchResults, categorizedBooks)
+      console.log(finalSearch)
+    }
+  
+
 
     return (
       <div className="search-books">
@@ -44,21 +74,18 @@ class Search extends React.Component {
                 }
               }
             />
-
           </div>
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            { searchTerm.length > 0 && searchResults && !('error' in searchResults) && (
-              searchResults.map((item) => {
+            { searchTerm.length > 0 && finalSearch && (
+              finalSearch.map((item) => {
                 return <Book 
-                  key={item.id}
-                  item={item}
+                key={item.id}
+                item={item}
                 />
-              })
-              // <Book />
-              
-              ) }
+              }) 
+              )}
             
           </ol>
         </div>
