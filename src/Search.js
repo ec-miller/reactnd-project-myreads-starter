@@ -44,7 +44,7 @@ class Search extends React.Component {
   render() {
     const searchResults = this.state.searchResults
     const searchTerm = this.state.searchTerm
-    const categorizedBooks=this.props.categorizedBooks
+    const { categorizedBooks, onChangeShelf }=this.props
     let finalSearch = []
 
     if (searchTerm.length > 0 && searchResults && !('error' in searchResults)) {
@@ -83,6 +83,7 @@ class Search extends React.Component {
                 return <Book 
                 key={item.id}
                 item={item}
+                onChangeShelf={onChangeShelf}
                 />
               }) 
               )}
