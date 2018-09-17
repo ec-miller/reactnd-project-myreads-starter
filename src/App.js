@@ -2,7 +2,7 @@ import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
 import { Route } from 'react-router-dom'
-import { getAll, update } from './BooksAPI.js'
+import { getAll } from './BooksAPI.js'
 import Search from './Search.js'
 import BooksView from './BooksView.js'
 
@@ -21,9 +21,21 @@ class BooksApp extends React.Component {
   }
 
   changeShelf = (book, shelf) => {
-    update(book, shelf)
-    this.componentDidMount()
+    // update(book, shelf)  //this returns a 403 forbidden error
+    // remove current version of book from state
+    this.setState((state) => {
+      return {apiBooks: state.apiBooks.filter((apiBook) => {
+        return apiBook !== book
+      })}
+    })
+    //update shelf and add updated info to state
+    book.shelf = shelf
+    this.setState((state) => {
+      return {apiBooks: [...state.apiBooks, book]}
+    })
+    
   }
+
 
   render() {
     const apiBooks = this.state.apiBooks

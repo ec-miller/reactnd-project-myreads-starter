@@ -18,7 +18,7 @@ class Book extends React.Component {
             ></div> : <div className="book-cover"></div> }
             </a>
             <div className="book-shelf-changer">
-              <select value={shelfChoice} onChange={(event) => onChangeShelf(item,event.value)}>
+              <select value={shelfChoice} onChange={(event) => onChangeShelf(item,event.target.value)}>
                 <option value="move" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
