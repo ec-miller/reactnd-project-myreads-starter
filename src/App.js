@@ -69,7 +69,7 @@ class BooksApp extends React.Component {
             <div className="list-books-title">
               <h1>MyReads</h1>
             </div>
-            <div className="list-books-content">>
+            <div className="list-books-content">
               <div>
                 {shelves.map((shelf) => {
                   const group = categorizedBooks.filter((book) => book.shelf === shelf)
