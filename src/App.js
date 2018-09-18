@@ -40,8 +40,9 @@ class BooksApp extends React.Component {
     book.shelf = shelf
     this.setState((state) => {
       return {apiBooks: [...state.apiBooks, book]}
-    })
-    localStorage.setItem('getAllBooks', JSON.stringify(this.state.apiBooks))
+    }, localStorage.setItem('getAllBooks', JSON.stringify(this.state.apiBooks)))
+    //last book added via Search is not getting put in the cache. wtf??? 
+    //set as localStorage doesn't seem to work wtf???
   }
 
 

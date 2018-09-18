@@ -9,14 +9,18 @@ class Search extends React.Component {
     searchResults: []
   }
 
-  updateSearch = (search) => {
-    this.setState({ searchTerm: search})
+  getSearch = () => {
+    console.log(this.state.searchTerm)
+      search(this.state.searchTerm).then((searchResults) => {
+        this.setState({ searchResults })
+        // console.log({searchResults})
+      })
   }
 
-  getSearch = () => {
-    search(this.state.searchTerm).then((searchResults) => {
-      this.setState({ searchResults })
-      // console.log({searchResults})
+  updateSearch = (searchTerm) => {
+    console.log(searchTerm)
+    this.setState({ searchTerm }, () => {
+      this.getSearch()
     })
   }
 
@@ -49,10 +53,21 @@ class Search extends React.Component {
 
     if (searchTerm.length > 0 && searchResults && !('error' in searchResults)) {
       finalSearch = this.compareSearchAndShelves(searchResults, categorizedBooks)
-      console.log(finalSearch)
+      // console.log(finalSearch)
     }
   
-
+    const acceptableTerms = [
+      'Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS'
+    ]
+    const regex1 = RegExp(searchTerm)
+    const goodSearch = () => {
+      for (let aTerm of acceptableTerms) {
+        if (regex1.test(aTerm)) {
+          return true
+        } 
+      }
+      return false
+    }
 
     return (
       <div className="search-books">
@@ -67,16 +82,24 @@ class Search extends React.Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-            <input type="text" placeholder="Search by title or author" 
+            <input type="text" placeholder="Search by title or author" value={searchTerm}
               onChange={ (event) => {
                 this.updateSearch(event.target.value) 
-                this.getSearch()
+                  // this.getSearch()
                 }
               }
             />
           </div>
         </div>
         <div className="search-books-results">
+          { !goodSearch() ? 
+          <div>
+          <p>Sorry, that is not a valid search term. Please try one of the options below!</p>
+          {acceptableTerms.map((term) => {
+            return <li key={term}>{term}</li>
+          }) }
+          </div>
+          :
           <ol className="books-grid">
             { searchTerm.length > 0 && finalSearch && (
               finalSearch.map((item) => {
@@ -86,9 +109,12 @@ class Search extends React.Component {
                 onChangeShelf={onChangeShelf}
                 />
               }) 
-              )}
+            )}
+          </ol>    
+          } 
+          
             
-          </ol>
+          
         </div>
       </div>
     )
