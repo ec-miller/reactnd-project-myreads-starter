@@ -22,7 +22,6 @@ class BooksApp extends React.Component {
         this.setState({ apiBooks })
       })
     } else {
-      console.log('there is a cache')
       this.setState({ apiBooks: JSON.parse(cachedState) })
     }
     
@@ -39,8 +38,11 @@ class BooksApp extends React.Component {
     //update shelf and add updated info to state
     book.shelf = shelf
     this.setState((state) => {
-      return {apiBooks: [...state.apiBooks, book]}
-    }, localStorage.setItem('getAllBooks', JSON.stringify(this.state.apiBooks)))
+      return { apiBooks: [...state.apiBooks, book] } 
+      }, () => {
+      localStorage.setItem('getAllBooks', JSON.stringify(this.state.apiBooks))
+      }
+    )
     //last book added via Search is not getting put in the cache. wtf??? 
     //set as localStorage doesn't seem to work wtf???
   }
