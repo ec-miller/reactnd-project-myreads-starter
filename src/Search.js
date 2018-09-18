@@ -10,15 +10,19 @@ class Search extends React.Component {
   }
 
   getSearch = () => {
-    console.log(this.state.searchTerm)
+    // console.log(this.state.searchTerm)
+    if (this.state.searchTerm.length > 0) {
       search(this.state.searchTerm).then((searchResults) => {
         this.setState({ searchResults })
         // console.log({searchResults})
       })
+    } else {
+      this.setState({ searchResults: [] })
+    }
   }
 
   updateSearch = (searchTerm) => {
-    console.log(searchTerm)
+    // console.log(searchTerm)
     this.setState({ searchTerm }, () => {
       this.getSearch()
     })
@@ -59,7 +63,7 @@ class Search extends React.Component {
     const acceptableTerms = [
       'Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS'
     ]
-    const regex1 = RegExp(searchTerm)
+    const regex1 = RegExp(searchTerm,'i')
     const goodSearch = () => {
       for (let aTerm of acceptableTerms) {
         if (regex1.test(aTerm)) {
@@ -85,11 +89,13 @@ class Search extends React.Component {
         </div>
         <div className="search-books-results">
           { !goodSearch() ? 
-          <div>
-          <p>Sorry, that is not a valid search term. Please try one of the options below!</p>
+          <div style={{textAlign: 'center'}}>
+          <h3>Sorry, that is not a valid search term. Please try one of the options below :)</h3>
+          <ol className="books-grid">
           {acceptableTerms.map((term) => {
-            return <li key={term}>{term}</li>
+            return <li className='list-terms' key={term}>{term}</li>
           }) }
+          </ol>
           </div>
           :
           <ol className="books-grid">
